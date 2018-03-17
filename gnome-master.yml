@@ -1,4 +1,4 @@
 FROM flatpak/flatpak-builder:base
 
 RUN flatpak remote-add gnome-nightly --if-not-exists https://sdk.gnome.org/gnome-nightly.flatpakrepo
-RUN flatpak --user install gnome-nightly org.gnome.Sdk org.gnome.Platform
+RUN flatpak install gnome-nightly org.gnome.Sdk org.gnome.Platform
