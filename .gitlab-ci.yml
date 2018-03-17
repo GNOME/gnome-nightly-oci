@@ -1,4 +1,8 @@
-stage:
+image: docker:latest
+services:
+    - docker:dind
+
+stages:
     - base_image
     - sdk_extensions
 
