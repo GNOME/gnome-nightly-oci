@@ -1,0 +1,3 @@
+FROM registry.gitlab.com/alatiera/gnome-nightly-oci/gnome-master:latest
+
+RUN flatpak install flathub org.freedesktop.Sdk.Extension.rust-stable
