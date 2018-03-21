@@ -1,4 +1,9 @@
 FROM flatpak/flatpak-builder:freedesktop-1-6
 
+# Add a machine-id as specified in the freedesktop spec:
+# https://www.freedesktop.org/software/systemd/man/machine-id.html
+# gnome-builder test suite depends on this
+RUN cat /dev/urandom | tr -dc a-f0-9 | head -c32 > /etc/machine-id && echo "" >> /etc/machine-id
+
 RUN flatpak remote-add gnome-nightly --if-not-exists https://sdk.gnome.org/gnome-nightly.flatpakrepo
 RUN flatpak install gnome-nightly org.gnome.Sdk org.gnome.Platform
