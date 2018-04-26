@@ -16,6 +16,10 @@ stages:
         - docker build --pull -f ${OCI_YML} -t ${IMAGE} .
         - echo ${IMAGE}
         - docker push ${IMAGE}
+    only:
+        - master
+        - triggers
+        - schedules
 
 nightly:master:
     stage: base_image
