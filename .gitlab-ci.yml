@@ -17,13 +17,15 @@ stages:
 nightly:master:
     stage: base_image
     before_script:
-        - export IMAGE=${CI_REGISTRY}/${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}/nightly:master
+        # https://stackoverflow.com/questions/2264428/converting-string-to-lower-case-in-bash#2264537
+        - export NAMESPACE="$(tr '[:upper:]' '[:lower:]' <<< "${CI_PROJECT_NAME}")"
+        - export IMAGE="${CI_REGISTRY}/${CI_PROJECT_NAMESPACE}/${NAMESPACE}/nightly:master"
         - export OCI_YML=gnome-master.yml
     <<: *base_build
 
 rust:master:
     stage: sdk_bundles
     before_script:
-        - export IMAGE=${CI_REGISTRY}/${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}/rust-bundle
+        - export IMAGE="${CI_REGISTRY}/${CI_PROJECT_NAMESPACE,,}/${CI_PROJECT_NAME}/rust-bundle"
         - export OCI_YML=rust_extension.yml
     <<: *base_build
