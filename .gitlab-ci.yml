@@ -4,7 +4,7 @@ services:
 
 stages:
     - base_image
-    - sdk_bundle
+    - sdk_bundles
 
 # Expects $IMAGE which should be the name+tag of the registry image.
 # Expects $OCI_YML variable which should be the path to the dockerfile
@@ -14,15 +14,15 @@ stages:
         - docker build --pull -f ${OCI_YML} -t ${IMAGE} .
         - docker push ${IMAGE}
 
-gnome:master:
+nightly:master:
     stage: base_image
     before_script:
-        - export IMAGE=${CI_REGISTRY}/${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}/gnome-master
+        - export IMAGE=${CI_REGISTRY}/${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}/nightly:master
         - export OCI_YML=gnome-master.yml
     <<: *base_build
 
 rust:master:
-    stage: sdk_bundle
+    stage: sdk_bundles
     before_script:
         - export IMAGE=${CI_REGISTRY}/${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}/rust-bundle
         - export OCI_YML=rust_extension.yml
