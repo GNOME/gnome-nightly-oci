@@ -1,0 +1,12 @@
+FROM flatpak/flatpak-builder:freedesktop-1-6
+
+ARG gnome_version
+
+RUN dnf install -y git xorg-x11-server-Xvfb && dnf clean all
+
+RUN flatpak install gnome org.gnome.Sdk//${gnome_version} org.gnome.Platform//${gnome_version}
+
+# Add a machine-id as specified in the freedesktop spec:
+# https://www.freedesktop.org/software/systemd/man/machine-id.html
+# gnome-builder test suite depends on this
+RUN cat /dev/urandom | tr -dc a-f0-9 | head -c32 > /etc/machine-id && echo "" >> /etc/machine-id

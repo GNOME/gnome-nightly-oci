@@ -11,9 +11,13 @@ stages:
 .base_template: &base_build
     tags:
         - aws
+    before_script:
+        # https://stackoverflow.com/questions/2264428/converting-string-to-lower-case-in-bash#2264537
+        - export NAMESPACE="$(echo "${CI_PROJECT_NAMESPACE}" | tr A-Z a-z)"
+        - export IMAGE="${CI_REGISTRY}/${NAMESPACE}/${CI_PROJECT_NAME}/${DOCKER_REPO_NAME}:master"
     script:
         - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-        - docker build --pull -f ${OCI_YML} -t ${IMAGE} .
+        - docker build --pull -f ${OCI_YML} -t ${IMAGE} --build-arg gnome_version=${GNOME_VERSION} .
         - echo ${IMAGE}
         - docker push ${IMAGE}
     only:
@@ -21,20 +25,23 @@ stages:
         - triggers
         - schedules
 
+stable:master:
+    stage: base_image
+    variables:
+        DOCKER_REPO_NAME: 3.28
+        OCI_YML: 'gnome-stable.yml'
+    <<: *base_build
+
 nightly:master:
     stage: base_image
-    before_script:
-        # https://stackoverflow.com/questions/2264428/converting-string-to-lower-case-in-bash#2264537
-        - export NAMESPACE="$(echo "${CI_PROJECT_NAMESPACE}" | tr A-Z a-z)"
-        - export IMAGE="${CI_REGISTRY}/${NAMESPACE}/${CI_PROJECT_NAME}/nightly:master"
-        - export OCI_YML=gnome-master.yml
+    variables:
+        DOCKER_REPO_NAME: 'nightly'
+        OCI_YML: 'gnome-master.yml'
     <<: *base_build
 
 rust:master:
     stage: sdk_bundles
-    before_script:
-        # https://stackoverflow.com/questions/2264428/converting-string-to-lower-case-in-bash#2264537
-        - export NAMESPACE="$(echo "${CI_PROJECT_NAMESPACE}" | tr A-Z a-z)"
-        - export IMAGE="${CI_REGISTRY}/${NAMESPACE}/${CI_PROJECT_NAME}/rust-bundle"
-        - export OCI_YML=rust_extension.yml
+    variables:
+        DOCKER_REPO_NAME: 'rust-bundle'
+        OCI_YML: 'rust_extension.yml'
     <<: *base_build
