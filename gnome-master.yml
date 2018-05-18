@@ -1,4 +1,4 @@
-FROM flatpak/flatpak-builder:freedesktop-1-6
+FROM flatpak/flatpak-builder:base
 
 RUN dnf install -y git xorg-x11-server-Xvfb && dnf clean all
 
