@@ -10,9 +10,7 @@
     GNOME Nightly runtime container images 
   </shortdesc>
   <description xml:lang="en">
-    <p>
       Pre built container images of the GNOME Nightly runtime to be used for building and testing Flatpaks in the CI.
-    </p>
   </description>
   <bug-database rdf:resource="https://gitlab.gnome.org/GNOME/gnome-nightly-oci/issues" />
   <maintainer>
