@@ -2,8 +2,8 @@ FROM flatpak/flatpak-builder:base
 
 RUN dnf install -y git xorg-x11-server-Xvfb && dnf clean all
 
-RUN flatpak remote-add gnome-nightly --if-not-exists https://sdk.gnome.org/gnome-nightly.flatpakrepo
-RUN flatpak install gnome-nightly org.gnome.Sdk org.gnome.Platform
+RUN flatpak remote-add gnome --if-not-exists https://sdk.gnome.org/gnome.flatpakrepo
+RUN flatpak install gnome org.gnome.Sdk//3.28 org.gnome.Platform//3.28
 
 # Add a machine-id as specified in the freedesktop spec:
 # https://www.freedesktop.org/software/systemd/man/machine-id.html
